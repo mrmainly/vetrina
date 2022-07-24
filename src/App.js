@@ -1,8 +1,16 @@
 import { Route, BrowserRouter, Routes } from "react-router-dom";
 import "./App.css";
+import "react-loading-skeleton/dist/skeleton.css";
 
 import ROUTES from "./routes";
-import { Login, Home, Register, CompanyDetail } from "./pages";
+import {
+    Login,
+    Home,
+    Register,
+    CompanyDetail,
+    CompanyDetailAnonim,
+    Admin,
+} from "./pages";
 import Layout from "./layout";
 
 function App() {
@@ -13,11 +21,16 @@ function App() {
                 <Routes>
                     <Route path={ROUTES.HOME} element={<Layout />}>
                         <Route index element={<Home />} />
+                        <Route element={<Admin />} path={ROUTES.ADMIN} />
                         <Route element={<Register />} path={ROUTES.REGISTER} />
                         <Route element={<Login />} path={ROUTES.LOGIN} />
                         <Route
                             element={<CompanyDetail />}
                             path={`${ROUTES.COMPANY_DETAIL}/:id`}
+                        />
+                        <Route
+                            element={<CompanyDetailAnonim />}
+                            path={`${ROUTES.COMPANY_DETAIL_ANONIM}/:id`}
                         />
                     </Route>
                 </Routes>

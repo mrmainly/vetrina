@@ -11,15 +11,24 @@ import {
     TextField,
     ButtonGroup,
     Button,
+    IconButton,
 } from "@mui/material";
 import { styled } from "@mui/system";
 import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
 import cookie from "js-cookie";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
-import { useGetMarketsQuery } from "../../service/CompanyService";
+import {
+    useGetMarketsMeQuery,
+    useCreateMarketsMeMutation,
+} from "../../service/CompanyService";
 import { useGetTagsListQuery } from "../../service/TagsService";
-import { CompanyCard, SkeletonVersion } from "../../components";
+import {
+    CompanyCard,
+    SkeletonVersion,
+    CompanyFormModal,
+} from "../../components";
 import ROUTES from "../../routes";
 
 const Img = styled("img")(({ theme }) => ({
@@ -37,6 +46,19 @@ const SelectDesktop = styled(FormControl)(({ theme }) => ({
     [theme.breakpoints.down("md")]: {
         marginBottom: 20,
     },
+    [theme.breakpoints.down("sm")]: {
+        width: "100%",
+    },
+}));
+
+const AddCard = styled(Box)(({ theme }) => ({
+    background: "#FFFFFF",
+    width: "90%",
+    height: 350,
+    padding: 10,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
     [theme.breakpoints.down("sm")]: {
         width: "100%",
     },
@@ -105,16 +127,16 @@ const ButtonGroupCus = styled(ButtonGroup)(({ theme }) => ({
     },
 }));
 
-const Home = () => {
+const Admin = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [sort, setSort] = useState("");
     const [filterName, setFilterName] = useState("");
     const [postFilterName, setPostFilterName] = useState("");
+    const [open, setOpen] = useState(false);
 
     const navigate = useNavigate();
-    const jwttoken = cookie.get("jwttoken");
 
-    const { data, error, isFetching } = useGetMarketsQuery({
+    const { data, error, isFetching } = useGetMarketsMeQuery({
         sort,
         filterName: postFilterName,
     });
@@ -134,6 +156,11 @@ const Home = () => {
                 flexDirection: "column",
             }}
         >
+            <CompanyFormModal
+                open={open}
+                setOpen={setOpen}
+                tagsList={tagsList}
+            />
             <Img src="/img/1111.svg" />
             <Space>
                 <SelectDesktop size="small">
@@ -176,12 +203,11 @@ const Home = () => {
                 <ButtonAdmin
                     variant="contained"
                     onClick={() => {
-                        jwttoken
-                            ? navigate(ROUTES.ADMIN)
-                            : navigate(ROUTES.LOGIN);
+                        cookie.remove("jwttoken");
+                        navigate(ROUTES.HOME);
                     }}
                 >
-                    Перейти в админку
+                    Выйти из админки
                 </ButtonAdmin>
             </Space>
             <Grid sx={{ mt: 5, width: "100%" }} container spacing={2}>
@@ -211,9 +237,24 @@ const Home = () => {
                               xs={12}
                               key={index}
                           >
-                              <CompanyCard {...item} type="anonim" />
+                              <CompanyCard {...item} type={"admin"} />
                           </Grid>
                       ))}
+                <Grid item lg={3} xl={3} md={4} sm={6} xs={12}>
+                    <AddCard>
+                        <IconButton
+                            style={{ width: 100, height: 100 }}
+                            onClick={() => setOpen(true)}
+                        >
+                            <img
+                                src={
+                                    "/img/pngtree-vector-add-icon-png-image_998225.svg"
+                                }
+                                style={{ width: "90%" }}
+                            />
+                        </IconButton>
+                    </AddCard>
+                </Grid>
             </Grid>
             <Box
                 sx={{
@@ -235,4 +276,4 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default Admin;

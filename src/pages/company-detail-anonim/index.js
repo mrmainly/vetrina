@@ -1,19 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { Box, Typography, Grid, IconButton } from "@mui/material";
 import { styled } from "@mui/system";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-import {
-    useGetMarketsIdQuery,
-    useGetMarketsItemsQuery,
-} from "../../service/CompanyService";
+import { useGetMarketsIdAnomimQuery } from "../../service/CompanyService";
 import {
     ProductCard,
     CatalogCardDetailSkeleton,
     ProductModal,
-    ProductFormModal,
 } from "../../components";
 import ROUTES from "../../routes";
 
@@ -37,6 +33,9 @@ const Item = styled(Box)(({ theme }) => ({
     background: "white",
     padding: 20,
     minHeight: 520,
+    [theme.breakpoints.down("md")]: {
+        minHeight: "max-content",
+    },
 }));
 
 const GridContainer = styled(Grid)(({ theme }) => ({
@@ -46,52 +45,36 @@ const GridContainer = styled(Grid)(({ theme }) => ({
     },
 }));
 
-const AddCard = styled(Box)(({ theme }) => ({
-    background: "#F7F9F7",
-    width: "90%",
-    height: 400,
-    padding: 10,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    [theme.breakpoints.down("sm")]: {
-        width: "100%",
-    },
-}));
-
-const CompanyDetail = () => {
-    const [open, setOpen] = useState(false);
-
+const CompanyDetailAnonim = () => {
     const params = useParams();
     const navigate = useNavigate();
 
-    const { data, isFetching, error } = useGetMarketsIdQuery({ id: params.id });
+    const location = useLocation();
+    const data = location.state;
+
     const {
         data: products,
         isFetching: isProductFetching,
         error: productError,
-    } = useGetMarketsItemsQuery({ id: params.id });
+    } = useGetMarketsIdAnomimQuery({ id: params.id });
+
+    console.log(products);
 
     return (
         <Box>
-            {isFetching ? (
+            {isProductFetching ? (
                 <Box>
                     <CatalogCardDetailSkeleton />
                 </Box>
-            ) : error ? (
+            ) : productError ? (
                 "Error"
             ) : (
                 <Box>
-                    <ProductFormModal
-                        open={open}
-                        setOpen={setOpen}
-                        id={params.id}
-                    />
                     <GridContainer container spacing={1}>
                         <Grid item lg={6} xl={6} md={6} sm={12} xs={12}>
                             <Item>
                                 <IconButton
-                                    onClick={() => navigate(ROUTES.ADMIN)}
+                                    onClick={() => navigate(ROUTES.HOME)}
                                 >
                                     <ArrowBackIcon />
                                 </IconButton>
@@ -123,42 +106,21 @@ const CompanyDetail = () => {
                             padding: 2,
                         }}
                     >
-                        {isProductFetching ? (
-                            "Products Loading"
-                        ) : productError ? (
-                            "Products Error"
-                        ) : (
-                            <Grid container spacing={1}>
-                                {products.results.map((item, index) => (
-                                    <Grid
-                                        item
-                                        key={index}
-                                        lg={3}
-                                        xl={3}
-                                        md={4}
-                                        sm={6}
-                                        xs={12}
-                                    >
-                                        <ProductCard {...item} />
-                                    </Grid>
-                                ))}
-                                <Grid item lg={3} xl={3} md={4} sm={6} xs={12}>
-                                    <AddCard>
-                                        <IconButton
-                                            style={{ width: 100, height: 100 }}
-                                            onClick={() => setOpen(true)}
-                                        >
-                                            <img
-                                                src={
-                                                    "/img/pngtree-vector-add-icon-png-image_998225.svg"
-                                                }
-                                                style={{ width: "90%" }}
-                                            />
-                                        </IconButton>
-                                    </AddCard>
+                        <Grid container spacing={1}>
+                            {products.results.map((item, index) => (
+                                <Grid
+                                    item
+                                    key={index}
+                                    lg={3}
+                                    xl={3}
+                                    md={4}
+                                    sm={6}
+                                    xs={12}
+                                >
+                                    <ProductCard {...item} />
                                 </Grid>
-                            </Grid>
-                        )}
+                            ))}
+                        </Grid>
                     </Box>
                     <ProductModal />
                 </Box>
@@ -180,4 +142,4 @@ const CompanyDetail = () => {
                 </Box> */
 }
 
-export default CompanyDetail;
+export default CompanyDetailAnonim;

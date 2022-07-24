@@ -2,5 +2,7 @@ import Login from "./login";
 import Home from "./home";
 import Register from "./register";
 import CompanyDetail from "./company-detail";
+import CompanyDetailAnonim from "./company-detail-anonim";
+import Admin from "./admin";
 
-export { Login, Home, Register, CompanyDetail };
+export { Login, Home, Register, CompanyDetail, CompanyDetailAnonim, Admin };

@@ -51,7 +51,7 @@ export default function SignIn() {
                 // toast.error(res.error.data.non_field_errors[0]);
             } else {
                 cookie.set("jwttoken", res.data.token);
-                navigate(ROUTES.HOME);
+                navigate(ROUTES.ADMIN);
             }
             console.log(res);
         });

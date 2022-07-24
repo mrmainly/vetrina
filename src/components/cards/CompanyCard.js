@@ -26,7 +26,7 @@ const Root = styled(Box)(({ theme }) => ({
     height: 350,
     overflow: "hidden",
     [theme.breakpoints.down("sm")]: {
-        width: "92%",
+        width: "100%",
     },
 }));
 
@@ -51,7 +51,7 @@ const ImgItem = styled(Box)(({ theme }) => ({
     backgroundPosition: "center",
 }));
 
-const CompanyCard = ({ logo, id, name, phone, tags }) => {
+const CompanyCard = ({ logo, id, name, phone, tags, type }) => {
     const navigate = useNavigate();
 
     return (
@@ -61,7 +61,11 @@ const CompanyCard = ({ logo, id, name, phone, tags }) => {
                     backgroundImage: `url(${logo})`,
                 }}
                 onClick={() => {
-                    navigate(`${ROUTES.COMPANY_DETAIL}/${id}`);
+                    type === "anonim"
+                        ? navigate(`${ROUTES.COMPANY_DETAIL_ANONIM}/${id}`, {
+                              state: { logo, id, name, phone, tags },
+                          })
+                        : navigate(`${ROUTES.COMPANY_DETAIL}/${id}`);
                 }}
             ></ImgItem>
             <Typography
