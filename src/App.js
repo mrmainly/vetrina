@@ -1,6 +1,7 @@
 import { Route, BrowserRouter, Routes } from "react-router-dom";
 import "./App.css";
 import "react-loading-skeleton/dist/skeleton.css";
+import { ToastContainer } from "react-toastify";
 
 import ROUTES from "./routes";
 import {
@@ -16,7 +17,7 @@ import Layout from "./layout";
 function App() {
     return (
         <div>
-            {/* <ToastContainer autoClose={1000} /> */}
+            <ToastContainer autoClose={1000} />
             <BrowserRouter>
                 <Routes>
                     <Route path={ROUTES.HOME} element={<Layout />}>

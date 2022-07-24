@@ -16,6 +16,10 @@ export const products = api.injectEndpoints({
         }),
         getMarketsItems: build.query({
             query: ({ id }) => `markets/items/?market=${id}`,
+            providesTags: (result = []) => [
+                ...result.results.map(({ id }) => ({ type: "Posts", id })),
+                { type: "Posts", id: "LIST" },
+            ],
         }),
         getMarketsMe: build.query({
             query: ({ sort, filterName }) =>
@@ -40,6 +44,24 @@ export const products = api.injectEndpoints({
                     body,
                 };
             },
+            invalidatesTags: [{ type: "Products" }],
+        }),
+        PutCompanyMe: build.mutation({
+            query({ id, ...body }) {
+                return {
+                    url: `markets/me/${id}/`,
+                    method: "PUT",
+                    body,
+                };
+            },
+        }),
+        DeleteCompanyMe: build.mutation({
+            query({ id }) {
+                return {
+                    url: `markets/me/${id}/`,
+                    method: "DELETE",
+                };
+            },
         }),
     }),
 });
@@ -52,4 +74,6 @@ export const {
     useGetMarketsMeQuery,
     useCreateMarketsMeMutation,
     useCreateProductMeMutation,
+    usePutCompanyMeMutation,
+    useDeleteCompanyMeMutation,
 } = products;

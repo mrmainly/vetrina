@@ -12,7 +12,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Link, useNavigate } from "react-router-dom";
-// import { toast } from "react-toastify";
+import { toast } from "react-toastify";
 import cookie from "js-cookie";
 
 import { useLoginMutation } from "../../service/AuthService";
@@ -48,7 +48,7 @@ export default function SignIn() {
             password: data.get("password"),
         }).then((res) => {
             if (res?.error) {
-                // toast.error(res.error.data.non_field_errors[0]);
+                toast.error(res.error.data.non_field_errors[0]);
             } else {
                 cookie.set("jwttoken", res.data.token);
                 navigate(ROUTES.ADMIN);

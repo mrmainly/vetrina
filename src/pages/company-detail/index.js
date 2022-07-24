@@ -1,19 +1,22 @@
 import React, { useState } from "react";
 
 import { useParams, useNavigate } from "react-router-dom";
-import { Box, Typography, Grid, IconButton } from "@mui/material";
+import { Box, Typography, Grid, IconButton, Button } from "@mui/material";
 import { styled } from "@mui/system";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 import {
     useGetMarketsIdQuery,
     useGetMarketsItemsQuery,
+    useDeleteCompanyMeMutation,
 } from "../../service/CompanyService";
+import { useGetTagsListQuery } from "../../service/TagsService";
 import {
     ProductCard,
     CatalogCardDetailSkeleton,
     ProductModal,
     ProductFormModal,
+    ProductUpdateModal,
 } from "../../components";
 import ROUTES from "../../routes";
 
@@ -59,8 +62,26 @@ const AddCard = styled(Box)(({ theme }) => ({
     },
 }));
 
+const BoxButton = styled(Box)(({ theme }) => ({
+    display: "flex",
+
+    [theme.breakpoints.down("sm")]: {
+        flexDirection: "column",
+    },
+}));
+
+const ButtonDelete = styled(Button)(({ theme }) => ({
+    marginLeft: 20,
+    background: "red",
+    [theme.breakpoints.down("sm")]: {
+        marginLeft: 0,
+        marginTop: 20,
+    },
+}));
+
 const CompanyDetail = () => {
     const [open, setOpen] = useState(false);
+    const [updateModalOpen, setUpdateModalOpen] = useState(false);
 
     const params = useParams();
     const navigate = useNavigate();
@@ -71,6 +92,8 @@ const CompanyDetail = () => {
         isFetching: isProductFetching,
         error: productError,
     } = useGetMarketsItemsQuery({ id: params.id });
+    const { data: tagsList } = useGetTagsListQuery();
+    const [deleteCompanyMe] = useDeleteCompanyMeMutation();
 
     return (
         <Box>
@@ -82,6 +105,13 @@ const CompanyDetail = () => {
                 "Error"
             ) : (
                 <Box>
+                    <ProductUpdateModal
+                        open={updateModalOpen}
+                        setOpen={setUpdateModalOpen}
+                        data={data}
+                        tagsList={tagsList}
+                        id={params.id}
+                    />
                     <ProductFormModal
                         open={open}
                         setOpen={setOpen}
@@ -105,6 +135,24 @@ const CompanyDetail = () => {
                                 <Typography variant="h6" sx={{ mt: 3 }}>
                                     {data?.description}
                                 </Typography>
+                                <BoxButton>
+                                    <Button
+                                        variant="contained"
+                                        sx={{ mt: 3 }}
+                                        onClick={() => setUpdateModalOpen(true)}
+                                    >
+                                        Редактировать
+                                    </Button>
+                                    <ButtonDelete
+                                        variant="contained"
+                                        sx={{ mt: 3 }}
+                                        onClick={() =>
+                                            deleteCompanyMe(params.id)
+                                        }
+                                    >
+                                        Удалить
+                                    </ButtonDelete>
+                                </BoxButton>
                             </Item>
                         </Grid>
                         <Grid item lg={6} xl={6} md={6} sm={12} xs={12}>

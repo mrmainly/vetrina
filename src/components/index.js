@@ -5,6 +5,7 @@ import SkeletonVersion from "./skeletons/CompanyCardsSkeleton";
 import CatalogCardDetailSkeleton from "./skeletons/CatalogCardDetailSkeleton";
 import CompanyFormModal from "./modals/CompanyFormModal";
 import ProductFormModal from "./modals/ProductFormModal";
+import ProductUpdateModal from "./modals/ProductUpdateModal";
 
 export {
     CompanyCard,
@@ -14,4 +15,5 @@ export {
     CatalogCardDetailSkeleton,
     CompanyFormModal,
     ProductFormModal,
+    ProductUpdateModal,
 };
