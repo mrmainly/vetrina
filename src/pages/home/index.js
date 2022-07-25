@@ -124,7 +124,13 @@ const BoxPagination = styled(Box)(({ theme }) => ({
     width: "100%",
     marginTop: 50,
     [theme.breakpoints.down("sm")]: {
-        width: "100%",
+        flexDirection: "column",
+    },
+}));
+
+const ButtonLink = styled(Button)(({ theme }) => ({
+    [theme.breakpoints.down("sm")]: {
+        marginTop: 30,
     },
 }));
 
@@ -259,7 +265,7 @@ const Home = () => {
                         setCurrentPage(value);
                     }}
                 />
-                <Button
+                <ButtonLink
                     variant="contained"
                     onClick={() =>
                         window.location.assign(
@@ -268,7 +274,7 @@ const Home = () => {
                     }
                 >
                     Наш план
-                </Button>
+                </ButtonLink>
             </BoxPagination>
         </Box>
     );
