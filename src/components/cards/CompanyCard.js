@@ -82,22 +82,24 @@ const CompanyCard = ({ logo, id, name, phone, tags, type }) => {
             <Typography
                 variant="body2"
                 sx={{
-                    color: "#2F80ED",
                     height: 40,
                     overflow: "hidden",
                 }}
             >
-                {phone}
+                Номер телефона:{" "}
+                <span style={{ color: "#2F80ED" }}>{phone}</span>
             </Typography>
             <Box sx={{ mt: "-10px" }}>
                 <Typography variant="body2" sx={{ mb: 1 }}>
                     Теги
                 </Typography>
-                {tags
-                    ? tags.map((item, index) => (
-                          <Tag key={index}>{item.name}</Tag>
-                      ))
-                    : ""}
+                {tags.length ? (
+                    tags.map((item, index) => (
+                        <Tag key={index}>{item.name}</Tag>
+                    ))
+                ) : (
+                    <Tag>Нету тега</Tag>
+                )}
             </Box>
         </Root>
     );

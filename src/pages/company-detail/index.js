@@ -68,7 +68,7 @@ const AddCard = styled(Box)(({ theme }) => ({
     justifyContent: "center",
     alignItems: "center",
     [theme.breakpoints.down("sm")]: {
-        width: "100%",
+        width: "92%",
     },
 }));
 
@@ -200,7 +200,7 @@ const CompanyDetail = () => {
                     <Box
                         sx={{
                             background: "white",
-                            minHeight: 600,
+                            minHeight: 100,
                             mt: 1,
                             padding: 2,
                         }}

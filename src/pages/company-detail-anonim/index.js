@@ -58,7 +58,7 @@ const CompanyDetailAnonim = () => {
         error: productError,
     } = useGetMarketsIdAnomimQuery({ id: params.id });
 
-    console.log(products);
+    console.log(data);
 
     return (
         <Box>
@@ -88,6 +88,27 @@ const CompanyDetailAnonim = () => {
                                 <Typography variant="h6" sx={{ mt: 3 }}>
                                     {data?.description}
                                 </Typography>
+
+                                <Typography variant="h6">Теги</Typography>
+                                <Box sx={{ display: "flex", flexWrap: "wrpa" }}>
+                                    {data?.tags.map((item, index) => (
+                                        <Box
+                                            key={index}
+                                            sx={{
+                                                mt: 2,
+                                                bgcolor: "green",
+                                                p: 0.5,
+                                                color: "white",
+                                                borderRadius: 2,
+                                                ml: index === 0 ? 0 : 1,
+                                            }}
+                                        >
+                                            <Typography variant="h6">
+                                                {item.name}
+                                            </Typography>
+                                        </Box>
+                                    ))}
+                                </Box>
                             </Item>
                         </Grid>
                         <Grid item lg={6} xl={6} md={6} sm={12} xs={12}>
@@ -101,25 +122,35 @@ const CompanyDetailAnonim = () => {
                     <Box
                         sx={{
                             background: "white",
-                            minHeight: 600,
+                            minHeight: 100,
                             mt: 1,
                             padding: 2,
+                            display: "flex",
+                            alignItems: "center",
                         }}
                     >
                         <Grid container spacing={1}>
-                            {products.results.map((item, index) => (
-                                <Grid
-                                    item
-                                    key={index}
-                                    lg={3}
-                                    xl={3}
-                                    md={4}
-                                    sm={6}
-                                    xs={12}
-                                >
-                                    <ProductCard {...item} />
+                            {products.results.length ? (
+                                products.results.map((item, index) => (
+                                    <Grid
+                                        item
+                                        key={index}
+                                        lg={3}
+                                        xl={3}
+                                        md={4}
+                                        sm={6}
+                                        xs={12}
+                                    >
+                                        <ProductCard {...item} />
+                                    </Grid>
+                                ))
+                            ) : (
+                                <Grid item xs={12}>
+                                    <Typography variant="h4">
+                                        Нет товаров
+                                    </Typography>
                                 </Grid>
-                            ))}
+                            )}
                         </Grid>
                     </Box>
                     <ProductModal />
