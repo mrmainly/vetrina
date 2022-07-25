@@ -51,8 +51,10 @@ const ImgItem = styled(Box)(({ theme }) => ({
     backgroundPosition: "center",
 }));
 
-const CompanyCard = ({ logo, id, name, phone, tags, type }) => {
+const CompanyCard = ({ logo, id, name, phone, tags, type, description }) => {
     const navigate = useNavigate();
+
+    console.log(tags);
 
     return (
         <Root>
@@ -63,7 +65,14 @@ const CompanyCard = ({ logo, id, name, phone, tags, type }) => {
                 onClick={() => {
                     type === "anonim"
                         ? navigate(`${ROUTES.COMPANY_DETAIL_ANONIM}/${id}`, {
-                              state: { logo, id, name, phone, tags },
+                              state: {
+                                  logo,
+                                  id,
+                                  name,
+                                  phone,
+                                  tags,
+                                  description,
+                              },
                           })
                         : navigate(`${ROUTES.COMPANY_DETAIL}/${id}`);
                 }}
@@ -89,18 +98,27 @@ const CompanyCard = ({ logo, id, name, phone, tags, type }) => {
                 Номер телефона:{" "}
                 <span style={{ color: "#2F80ED" }}>{phone}</span>
             </Typography>
-            <Box sx={{ mt: "-10px" }}>
+            <Box
+                sx={{
+                    height: 85,
+                    overflow: "hidden",
+                }}
+            >
+                <Typography variant="body2">Описание:</Typography>
+                <Typography variant="body2">{description}</Typography>
+            </Box>
+            {/* <Box sx={{ mt: "-10px" }}>
                 <Typography variant="body2" sx={{ mb: 1 }}>
                     Теги
                 </Typography>
-                {tags.length ? (
+                {tags ? (
                     tags.map((item, index) => (
                         <Tag key={index}>{item.name}</Tag>
                     ))
                 ) : (
                     <Tag>Нету тега</Tag>
                 )}
-            </Box>
+            </Box> */}
         </Root>
     );
 };

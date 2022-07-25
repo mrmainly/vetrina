@@ -85,29 +85,57 @@ const CompanyDetailAnonim = () => {
                                     Номер телефона:&nbsp;
                                     {data?.phone}
                                 </Typography>
+                                <Box
+                                    sx={{
+                                        mt: 3,
+                                        maxHeight: 230,
+                                        overflow: "hidden",
+                                    }}
+                                >
+                                    <Typography variant="h6">
+                                        Описание:
+                                    </Typography>{" "}
+                                    <Typography variant="h6">
+                                        {data?.description}
+                                    </Typography>
+                                </Box>
                                 <Typography variant="h6" sx={{ mt: 3 }}>
-                                    {data?.description}
+                                    Теги
                                 </Typography>
-
-                                <Typography variant="h6">Теги</Typography>
                                 <Box sx={{ display: "flex", flexWrap: "wrpa" }}>
-                                    {data?.tags.map((item, index) => (
+                                    {data.tags.length ? (
+                                        data?.tags.map((item, index) => (
+                                            <Box
+                                                key={index}
+                                                sx={{
+                                                    mt: 2,
+                                                    bgcolor: "green",
+                                                    p: 0.5,
+                                                    color: "white",
+                                                    borderRadius: 2,
+                                                    ml: index === 0 ? 0 : 1,
+                                                }}
+                                            >
+                                                <Typography variant="h6">
+                                                    {item.name}
+                                                </Typography>
+                                            </Box>
+                                        ))
+                                    ) : (
                                         <Box
-                                            key={index}
                                             sx={{
                                                 mt: 2,
                                                 bgcolor: "green",
                                                 p: 0.5,
                                                 color: "white",
                                                 borderRadius: 2,
-                                                ml: index === 0 ? 0 : 1,
                                             }}
                                         >
                                             <Typography variant="h6">
-                                                {item.name}
+                                                Нету тега
                                             </Typography>
                                         </Box>
-                                    ))}
+                                    )}
                                 </Box>
                             </Item>
                         </Grid>

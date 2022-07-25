@@ -149,6 +149,8 @@ const Admin = () => {
     let countNumber = Math.ceil(data?.count / 20);
     const skeletonData = 8;
 
+    console.log(data);
+
     return (
         <Box
             sx={{
