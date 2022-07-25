@@ -8,7 +8,7 @@ export const products = api.injectEndpoints({
                     sort ? `${filterName ? "&" : "?"}tags=${sort}` : ""
                 }${
                     filterName ? `${sort ? "&" : "?"}search=${filterName}` : ""
-                }${sort || filterName ? "&" : "?"}offset=${currentPage}`,
+                }${sort || filterName ? "&" : "?"}page=${currentPage}`,
             providesTags: (result = []) => [
                 ...result.results.map(({ id }) => ({ type: "Markets", id })),
                 { type: "Markets", id: "LIST" },
@@ -29,7 +29,7 @@ export const products = api.injectEndpoints({
         }),
         getMarketsMe: build.query({
             query: ({ sort, filterName, currentPage }) =>
-                `markets/me/?offset=${currentPage}${
+                `markets/me/?page=${currentPage}${
                     sort ? `${filterName ? "&" : "?"}tags=${sort}` : ""
                 }${
                     filterName ? `${sort ? "&" : "?"}search=${filterName}` : ""

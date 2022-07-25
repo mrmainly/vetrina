@@ -11,6 +11,7 @@ import {
     CompanyDetail,
     CompanyDetailAnonim,
     Admin,
+    Plan,
 } from "./pages";
 import Layout from "./layout";
 
@@ -25,6 +26,7 @@ function App() {
                         <Route element={<Admin />} path={ROUTES.ADMIN} />
                         <Route element={<Register />} path={ROUTES.REGISTER} />
                         <Route element={<Login />} path={ROUTES.LOGIN} />
+                        <Route element={<Plan />} path={ROUTES.PLAN} />
                         <Route
                             element={<CompanyDetail />}
                             path={`${ROUTES.COMPANY_DETAIL}/:id`}

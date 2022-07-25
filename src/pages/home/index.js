@@ -42,6 +42,19 @@ const SelectDesktop = styled(FormControl)(({ theme }) => ({
     },
 }));
 
+const SelectDesktop2 = styled(FormControl)(({ theme }) => ({
+    width: 250,
+    background: "white",
+    marginLeft: 20,
+    [theme.breakpoints.down("md")]: {
+        marginBottom: 20,
+        marginLeft: 0,
+    },
+    [theme.breakpoints.down("sm")]: {
+        width: "100%",
+    },
+}));
+
 const Space = styled(Box)(({ theme }) => ({
     display: "flex",
     alignItems: "center",
@@ -105,6 +118,16 @@ const ButtonGroupCus = styled(ButtonGroup)(({ theme }) => ({
     },
 }));
 
+const BoxPagination = styled(Box)(({ theme }) => ({
+    display: "flex",
+    justifyContent: "space-between",
+    width: "100%",
+    marginTop: 50,
+    [theme.breakpoints.down("sm")]: {
+        width: "100%",
+    },
+}));
+
 const Home = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [sort, setSort] = useState("");
@@ -159,6 +182,18 @@ const Home = () => {
                         )}
                     </Select>
                 </SelectDesktop>
+                <SelectDesktop2 size="small">
+                    <InputLabel id="demo-simple-select-label">
+                        Города
+                    </InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        label="Города"
+                    >
+                        <MenuItem value="1">Якутск</MenuItem>
+                    </Select>
+                </SelectDesktop2>
                 <ButtonGroupCus>
                     <CusTextField
                         label="Поиск по названию"
@@ -185,7 +220,7 @@ const Home = () => {
                     Перейти в админку
                 </ButtonAdmin>
             </Space>
-            <Grid sx={{ mt: 5, width: "100%" }} container spacing={2}>
+            <Grid sx={{ mt: 5 }} container spacing={2}>
                 {isFetching
                     ? Array(skeletonData)
                           .fill(0)
@@ -216,14 +251,7 @@ const Home = () => {
                           </Grid>
                       ))}
             </Grid>
-            <Box
-                sx={{
-                    display: "flex",
-                    justifyContent: "start",
-                    width: "100%",
-                    marginTop: 5,
-                }}
-            >
+            <BoxPagination>
                 <Pagination
                     count={countNumber}
                     page={currentPage}
@@ -231,7 +259,17 @@ const Home = () => {
                         setCurrentPage(value);
                     }}
                 />
-            </Box>
+                <Button
+                    variant="contained"
+                    onClick={() =>
+                        window.location.assign(
+                            "https://infograph.venngage.com/ps/KajxMrn5Bxo/vetrina-roadmap"
+                        )
+                    }
+                >
+                    Наш план
+                </Button>
+            </BoxPagination>
         </Box>
     );
 };

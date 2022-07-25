@@ -17,7 +17,6 @@ const Root = styled(Box)(({ theme }) => ({
     padding: 10,
     background: "#FFFFFF",
     margin: "0 auto",
-
     width: "90%",
     "&:hover": {
         boxShadow: "0px 0px 20px rgba(0,0,0,0.8)",
@@ -25,9 +24,6 @@ const Root = styled(Box)(({ theme }) => ({
     transition: "all 1s ease",
     height: 350,
     overflow: "hidden",
-    [theme.breakpoints.down("sm")]: {
-        width: "100%",
-    },
 }));
 
 const Tag = styled(Box)(({ theme }) => ({
@@ -53,8 +49,6 @@ const ImgItem = styled(Box)(({ theme }) => ({
 
 const CompanyCard = ({ logo, id, name, phone, tags, type, description }) => {
     const navigate = useNavigate();
-
-    console.log(tags);
 
     return (
         <Root>

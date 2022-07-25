@@ -5,6 +5,7 @@ const ROUTES = {
     COMPANY_DETAIL: "/company-detail",
     COMPANY_DETAIL_ANONIM: "/company-detail-anonim",
     ADMIN: "/admin",
+    PLAN: "/plan",
 };
 
 export default ROUTES;
