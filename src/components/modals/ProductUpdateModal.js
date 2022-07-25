@@ -112,6 +112,7 @@ export default function ProductUpdateModal({
     tagsList,
     data,
     id,
+    refetch,
 }) {
     const [tags, setTags] = useState(
         data.tags
@@ -170,11 +171,14 @@ export default function ProductUpdateModal({
         putProduct({
             id,
             ...data,
-            tags: tags.map((item) => {
-                return item.value;
-            }),
+            // tags: tags.map((item) => {
+            //     return item.value;
+            // }),
         }).then((res) => {
-            console.log(res);
+            if (res.data) {
+                refetch();
+                handleClose();
+            }
         });
     };
 
@@ -214,7 +218,7 @@ export default function ProductUpdateModal({
                                 fileSelectHandler(event);
                             }}
                         /> */}
-                        {tags.map((item, index) => (
+                        {/* {tags.map((item, index) => (
                             <ButtonGroup
                                 key={index}
                                 style={{ width: "100%", marginTop: 10 }}
@@ -250,7 +254,7 @@ export default function ProductUpdateModal({
                                     <RemoveCircleIcon />
                                 </CustomButton>
                             </ButtonGroup>
-                        ))}
+                        ))} */}
 
                         <Button
                             sx={{ mt: 2 }}

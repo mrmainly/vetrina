@@ -117,6 +117,7 @@ const Home = () => {
     const { data, error, isFetching } = useGetMarketsQuery({
         sort,
         filterName: postFilterName,
+        currentPage,
     });
     const {
         data: tagsList,
@@ -141,7 +142,7 @@ const Home = () => {
                     <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        label="Сортировка"
+                        label="Теги"
                         value={sort}
                         onChange={(e) => setSort(e.target.value)}
                     >

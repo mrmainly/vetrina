@@ -1,7 +1,17 @@
 import React, { useState } from "react";
 
 import { useParams, useNavigate } from "react-router-dom";
-import { Box, Typography, Grid, IconButton, Button } from "@mui/material";
+import {
+    Box,
+    Typography,
+    Grid,
+    IconButton,
+    Button,
+    Select,
+    FormControl,
+    MenuItem,
+    InputLabel,
+} from "@mui/material";
 import { styled } from "@mui/system";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
@@ -79,6 +89,17 @@ const ButtonDelete = styled(Button)(({ theme }) => ({
     },
 }));
 
+const SelectDesktop = styled(FormControl)(({ theme }) => ({
+    width: "100%",
+    background: "white",
+    "& .MuiOutlinedInput-root": {
+        "& fieldset": {
+            borderTopRightRadius: 0,
+            borderEndEndRadius: 0,
+        },
+    },
+}));
+
 const CompanyDetail = () => {
     const [open, setOpen] = useState(false);
     const [updateModalOpen, setUpdateModalOpen] = useState(false);
@@ -86,18 +107,22 @@ const CompanyDetail = () => {
     const params = useParams();
     const navigate = useNavigate();
 
-    const { data, isFetching, error } = useGetMarketsIdQuery({ id: params.id });
+    const { data, isLoading, error, refetch } = useGetMarketsIdQuery({
+        id: params.id,
+    });
     const {
         data: products,
-        isFetching: isProductFetching,
+        isLoading: isProductFetching,
         error: productError,
     } = useGetMarketsItemsQuery({ id: params.id });
     const { data: tagsList } = useGetTagsListQuery();
     const [deleteCompanyMe] = useDeleteCompanyMeMutation();
 
+    console.log(data);
+
     return (
         <Box>
-            {isFetching ? (
+            {isLoading ? (
                 <Box>
                     <CatalogCardDetailSkeleton />
                 </Box>
@@ -111,6 +136,7 @@ const CompanyDetail = () => {
                         data={data}
                         tagsList={tagsList}
                         id={params.id}
+                        refetch={refetch}
                     />
                     <ProductFormModal
                         open={open}
@@ -133,8 +159,15 @@ const CompanyDetail = () => {
                                     {data?.phone}
                                 </Typography>
                                 <Typography variant="h6" sx={{ mt: 3 }}>
+                                    Описание:&nbsp;
                                     {data?.description}
                                 </Typography>
+                                <Box>
+                                    <Typography variant="h6" sx={{ mt: 3 }}>
+                                        Теги
+                                    </Typography>
+                                    {<Box></Box>}
+                                </Box>
                                 <BoxButton>
                                     <Button
                                         variant="contained"
@@ -146,9 +179,10 @@ const CompanyDetail = () => {
                                     <ButtonDelete
                                         variant="contained"
                                         sx={{ mt: 3 }}
-                                        onClick={() =>
-                                            deleteCompanyMe(params.id)
-                                        }
+                                        onClick={() => {
+                                            deleteCompanyMe({ id: params.id });
+                                            navigate(ROUTES.ADMIN);
+                                        }}
                                     >
                                         Удалить
                                     </ButtonDelete>
@@ -187,7 +221,10 @@ const CompanyDetail = () => {
                                         sm={6}
                                         xs={12}
                                     >
-                                        <ProductCard {...item} />
+                                        <ProductCard
+                                            {...item}
+                                            market_id={params.id}
+                                        />
                                     </Grid>
                                 ))}
                                 <Grid item lg={3} xl={3} md={4} sm={6} xs={12}>

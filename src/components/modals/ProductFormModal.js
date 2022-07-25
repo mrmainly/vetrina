@@ -166,7 +166,9 @@ export default function ProductFormModal({ open, setOpen, id }) {
                 };
             }),
         }).then((res) => {
-            console.log(res);
+            if (res.data) {
+                handleClose();
+            }
         });
     };
 

@@ -147,14 +147,22 @@ export default function CompanyFormModal({ open, setOpen, tagsList }) {
     };
 
     const onSubmit = (data) => {
-        createProduct({
-            ...data,
-            logo: photo,
-            tags: tags.map((item) => {
-                return item.value;
-            }),
-        }).then((res) => {
-            console.log(res);
+        let formData = new FormData();
+        const newAreay = tags.map((item) => {
+            return parseInt(item.value);
+        });
+        formData.append("logo", photo);
+        formData.append("name", data.name);
+        formData.append("phone", data.phone);
+        formData.append("description", data.description);
+        // const json_arr = JSON.stringify(
+
+        // );
+        formData.append("tags", newAreay);
+        createProduct(formData).then((res) => {
+            if (res.data) {
+                handleClose();
+            }
         });
     };
 

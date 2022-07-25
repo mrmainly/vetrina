@@ -1,16 +1,17 @@
 import React from "react";
 
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Button } from "@mui/material";
 import { styled } from "@mui/system";
 import { useDispatch } from "react-redux";
 import { productModalSlice } from "../../slices/ProductModalSlice";
 
 import ROUTES from "../../routes";
+import { useDeleteItemsMeMutation } from "../../service/CompanyService";
 
 const Root = styled(Box)(({ theme }) => ({
     display: "flex",
     flexDirection: "column",
-    justifyContent: "start",
+    justifyContent: "space-between",
     alignItems: "start",
     // alignItems: 'center',
     // justifyContent: 'center',
@@ -46,6 +47,11 @@ const ImgItem = styled(Box)(({ theme }) => ({
     cursor: "pointer",
 }));
 
+const ButtonDelete = styled(Button)(({ theme }) => ({
+    background: "red",
+    marginTop: 10,
+}));
+
 const ProductCard = ({
     price,
     attributes,
@@ -53,88 +59,112 @@ const ProductCard = ({
     market,
     amount,
     description,
+    id,
+    market_id,
 }) => {
+    const [deleteProduct] = useDeleteItemsMeMutation();
     const { openAndAdded } = productModalSlice.actions;
     const dispatch = useDispatch();
 
     return (
         <Root>
-            <ImgItem
-                sx={{
-                    backgroundImage: `url(/img/2832.jpg)`,
-                }}
-                onClick={() => {
-                    dispatch(
-                        openAndAdded({
-                            price: price,
-                            name: name,
-                            market: market,
-                            description: description,
-                            attributes: attributes,
-                        })
-                    );
-                }}
-            ></ImgItem>
-            <Typography
-                variant="body1"
-                sx={{
-                    mt: 2,
-                    color: "#202020",
-                    fontWeight: "bold",
-                    overflow: "hidden",
-                }}
-            >
-                {name}
-            </Typography>
-            <Typography
-                variant="body1"
-                sx={{
-                    color: "#202020",
-                    fontWeight: "bold",
-                    overflow: "hidden",
-                }}
-            >
-                {description}
-            </Typography>
-            <Typography
-                variant="h6"
-                sx={{
-                    height: 40,
-                    overflow: "hidden",
-                    fontWeight: 600,
-                }}
-            >
-                {price}₽
-            </Typography>
-            <Box sx={{ mt: "-10px", width: "100%" }}>
-                <Typography variant="body1" sx={{ mt: 1 }}>
-                    атрибуты
+            <>
+                <ImgItem
+                    sx={{
+                        backgroundImage: `url(/img/2832.jpg)`,
+                    }}
+                    onClick={() => {
+                        dispatch(
+                            openAndAdded({
+                                price: price,
+                                name: name,
+                                market: market,
+                                description: description,
+                                attributes: attributes,
+                            })
+                        );
+                    }}
+                ></ImgItem>
+                <Typography
+                    variant="body1"
+                    sx={{
+                        mt: 2,
+                        color: "#202020",
+                        fontWeight: "bold",
+                        overflow: "hidden",
+                    }}
+                >
+                    {name}
                 </Typography>
-                {attributes.length
-                    ? attributes.map((item, index) => (
-                          <Box
-                              sx={{
-                                  display: "flex",
-                                  justifyContent: "space-between",
-                              }}
-                              key={index}
-                          >
-                              <Box sx={{ width: 140 }}>
-                                  <Typography
-                                      variant="body2"
-                                      sx={{ color: "gray" }}
-                                  >
-                                      {item.name}
-                                  </Typography>
-                              </Box>
+                <Typography
+                    variant="body1"
+                    sx={{
+                        color: "#202020",
+                        fontWeight: "bold",
+                        overflow: "hidden",
+                    }}
+                >
+                    {description}
+                </Typography>
+                <Typography
+                    variant="h6"
+                    sx={{
+                        height: 40,
+                        overflow: "hidden",
+                        fontWeight: 600,
+                    }}
+                >
+                    {price}₽
+                </Typography>
+                <Box
+                    sx={{
+                        mt: "-10px",
+                        width: "100%",
+                        height: 65,
+                        overflow: "hidden",
+                    }}
+                >
+                    <Typography variant="body1">атрибуты</Typography>
+                    {attributes.length ? (
+                        attributes.map((item, index) => (
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                }}
+                                key={index}
+                            >
+                                <Box sx={{ width: 140 }}>
+                                    <Typography
+                                        variant="body2"
+                                        sx={{ color: "gray" }}
+                                    >
+                                        {item.name}
+                                    </Typography>
+                                </Box>
 
-                              <Typography variant="body2">
-                                  {item.value}
-                              </Typography>
-                          </Box>
-                      ))
-                    : "Нету атрибутов"}
-            </Box>
+                                <Typography variant="body2">
+                                    {item.value}
+                                </Typography>
+                            </Box>
+                        ))
+                    ) : (
+                        <Box>Нету атрибутов</Box>
+                    )}
+                </Box>
+            </>
+            {market_id ? (
+                <ButtonDelete
+                    variant="contained"
+                    onClick={() => {
+                        deleteProduct({ id: id, market_id: market_id });
+                    }}
+                >
+                    Удалить
+                </ButtonDelete>
+            ) : (
+                ""
+            )}
         </Root>
     );
 };

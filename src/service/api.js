@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import cookie from "js-cookie";
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: "https://xn--80adjmzqn.xn--p1ai/api/v1/",
+    baseUrl: process.env.REACT_APP_API_KEY,
     prepareHeaders: (headers, { getState }) => {
         const token = cookie.get("jwttoken");
         if (token) {
@@ -19,7 +19,13 @@ export const api = createApi({
 
     baseQuery: baseQuery,
 
-    tagTypes: ["Products", "Provider", "Markets"],
+    tagTypes: ["Products", "Markets", "Markets_Detail"],
 
     endpoints: () => ({}),
+});
+
+export const enhancedApi = api.enhanceEndpoints({
+    endpoints: () => ({
+        getPost: () => "test",
+    }),
 });

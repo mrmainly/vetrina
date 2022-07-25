@@ -93,9 +93,11 @@ const CompanyCard = ({ logo, id, name, phone, tags, type }) => {
                 <Typography variant="body2" sx={{ mb: 1 }}>
                     Теги
                 </Typography>
-                {tags.map((item, index) => (
-                    <Tag key={index}>{item.name}</Tag>
-                ))}
+                {tags
+                    ? tags.map((item, index) => (
+                          <Tag key={index}>{item.name}</Tag>
+                      ))
+                    : ""}
             </Box>
         </Root>
     );

@@ -3,10 +3,16 @@ import { api } from "./api";
 export const products = api.injectEndpoints({
     endpoints: (build) => ({
         getMarkets: build.query({
-            query: ({ sort, filterName }) =>
-                `markets/${sort ? `?tags=${sort}` : ""}${
+            query: ({ sort, filterName, currentPage }) =>
+                `markets/${
+                    sort ? `${filterName ? "&" : "?"}tags=${sort}` : ""
+                }${
                     filterName ? `${sort ? "&" : "?"}search=${filterName}` : ""
-                } `,
+                }${sort || filterName ? "&" : "?"}offset=${currentPage}`,
+            providesTags: (result = []) => [
+                ...result.results.map(({ id }) => ({ type: "Markets", id })),
+                { type: "Markets", id: "LIST" },
+            ],
         }),
         getMarketsId: build.query({
             query: ({ id }) => `markets/me/${id}/`,
@@ -17,15 +23,21 @@ export const products = api.injectEndpoints({
         getMarketsItems: build.query({
             query: ({ id }) => `markets/items/?market=${id}`,
             providesTags: (result = []) => [
-                ...result.results.map(({ id }) => ({ type: "Posts", id })),
-                { type: "Posts", id: "LIST" },
+                ...result.results.map(({ id }) => ({ type: "Products", id })),
+                { type: "Products", id: "LIST" },
             ],
         }),
         getMarketsMe: build.query({
-            query: ({ sort, filterName }) =>
-                `markets/me/${sort ? `?tags=${sort}` : ""}${
+            query: ({ sort, filterName, currentPage }) =>
+                `markets/me/?offset=${currentPage}${
+                    sort ? `${filterName ? "&" : "?"}tags=${sort}` : ""
+                }${
                     filterName ? `${sort ? "&" : "?"}search=${filterName}` : ""
-                } `,
+                }&limit=${20}`,
+            providesTags: (result = []) => [
+                ...result.results.map(({ id }) => ({ type: "Markets", id })),
+                { type: "Markets", id: "LIST" },
+            ],
         }),
         CreateMarketsMe: build.mutation({
             query(body) {
@@ -35,6 +47,7 @@ export const products = api.injectEndpoints({
                     body,
                 };
             },
+            invalidatesTags: [{ type: "Markets" }],
         }),
         CreateProductMe: build.mutation({
             query({ id, ...body }) {
@@ -50,7 +63,7 @@ export const products = api.injectEndpoints({
             query({ id, ...body }) {
                 return {
                     url: `markets/me/${id}/`,
-                    method: "PUT",
+                    method: "PATCH",
                     body,
                 };
             },
@@ -62,6 +75,16 @@ export const products = api.injectEndpoints({
                     method: "DELETE",
                 };
             },
+            invalidatesTags: [{ type: "Markets" }],
+        }),
+        DeleteItemsMe: build.mutation({
+            query({ id, market_id }) {
+                return {
+                    url: `markets/me/${market_id}/items/${id}/`,
+                    method: "DELETE",
+                };
+            },
+            invalidatesTags: [{ type: "Products" }],
         }),
     }),
 });
@@ -76,4 +99,5 @@ export const {
     useCreateProductMeMutation,
     usePutCompanyMeMutation,
     useDeleteCompanyMeMutation,
+    useDeleteItemsMeMutation,
 } = products;

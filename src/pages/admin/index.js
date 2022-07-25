@@ -17,7 +17,6 @@ import { styled } from "@mui/system";
 import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
 import cookie from "js-cookie";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 import {
     useGetMarketsMeQuery,
@@ -136,9 +135,10 @@ const Admin = () => {
 
     const navigate = useNavigate();
 
-    const { data, error, isFetching } = useGetMarketsMeQuery({
+    const { data, error, isFetching, isLoading } = useGetMarketsMeQuery({
         sort,
         filterName: postFilterName,
+        currentPage,
     });
     const {
         data: tagsList,
@@ -168,7 +168,7 @@ const Admin = () => {
                     <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        label="Сортировка"
+                        label="Теги"
                         value={sort}
                         onChange={(e) => setSort(e.target.value)}
                     >
@@ -211,7 +211,7 @@ const Admin = () => {
                 </ButtonAdmin>
             </Space>
             <Grid sx={{ mt: 5, width: "100%" }} container spacing={2}>
-                {isFetching
+                {isLoading
                     ? Array(skeletonData)
                           .fill(0)
                           .map((item, index) => (
